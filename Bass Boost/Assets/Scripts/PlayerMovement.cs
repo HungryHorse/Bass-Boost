@@ -5,35 +5,36 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour {
 
     public float Speed = 5f;
-    public float JumpHeight = 2f;
-    public float GroundDistance = 0.2f;
-    public float DashDistance = 5f;
-    public LayerMask Ground;
 
-    private Rigidbody _body;
-    private Vector3 _inputs = Vector3.zero;
-    private bool _isGrounded = true;
+    private Rigidbody player;
+    private Vector3 facing;
 
     void Start()
     {
-        _body = GetComponent<Rigidbody>();
+        player = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
-        _inputs = Vector3.zero;
-        _inputs.x = Input.GetAxis("Horizontal");
-        _inputs.z = Input.GetAxis("Vertical");
-        if (_inputs != Vector3.zero)
+        facing = Vector3.zero;
+        facing.x = Input.GetAxis("Horizontal");
+        Debug.Log(Input.GetAxis("Horizontal"));
+        facing.z = Input.GetAxis("Vertical");
+        if (facing != Vector3.zero)
         {
-            transform.forward = _inputs;
+            transform.forward = facing;
         }
-        
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            facing *= 2;
+        }
+
     }
 
 
     void FixedUpdate()
     {
-        _body.MovePosition(_body.position + _inputs * Speed * Time.fixedDeltaTime);
+        player.MovePosition(player.position + facing * Speed * Time.fixedDeltaTime);
     }
 }
