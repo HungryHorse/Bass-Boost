@@ -1,13 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour {
 
-    public float Speed = 5f;
-    public float maxCharge = 5f;
-    public float chargeRate = 0.25f;
-    public float minCharge = 2f;
+    public float Speed;
+    public float maxCharge;
+    public float chargeRate ;
+    public float minCharge;
+
+    public Slider boostMeter;
 
     private bool boost = false;
     private float charge;
@@ -45,9 +48,9 @@ public class PlayerMovement : MonoBehaviour {
         if (Input.GetButtonUp("Jump"))
         {
             boost = true;
-            charge = minCharge;
         }
 
+        boostMeter.value = charge;
     }
 
 
@@ -56,8 +59,11 @@ public class PlayerMovement : MonoBehaviour {
         
         if (boost == true)
         {
-            Debug.Log("Boost");
-            player.AddForce( * charge * 10);
+            //Debug.Log("Boost");
+            player.AddForce(facing.normalized * charge * 200);
+
+            Debug.Log(charge);
+            charge = minCharge;
             boost = false;
         }
         else
