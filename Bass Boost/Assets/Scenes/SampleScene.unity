@@ -844,7 +844,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 10
   maxCharge: 5
-  chargeRate: 1
+  chargeRate: 2
   minCharge: 1
   boostMeter: {fileID: 82860615}
 --- !u!54 &594799714
