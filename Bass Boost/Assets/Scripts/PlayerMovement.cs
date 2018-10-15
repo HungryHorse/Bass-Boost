@@ -59,10 +59,8 @@ public class PlayerMovement : MonoBehaviour {
         
         if (boost == true)
         {
-            //Debug.Log("Boost");
             player.AddForce(facing.normalized * charge * 200);
-
-            Debug.Log(charge);
+            
             charge = minCharge;
             boost = false;
         }
