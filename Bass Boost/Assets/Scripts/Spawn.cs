@@ -5,14 +5,15 @@ using UnityEngine;
 public class Spawn : MonoBehaviour {
 
     public GameObject[] enemyTypes;
-    private System.Random rand;
+    public Transform Center;
     private GameObject enemyToSpawn;
     private Transform spawn;
+    private Transform[] children;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+    // Use this for initialization
+    void Start () {
+		children = GetComponentsInChildren<Transform>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -26,8 +27,11 @@ public class Spawn : MonoBehaviour {
 
     private void SpawnEnemy()
     {
-        int index = rand.Next(0, enemyTypes.Length);
+        int index = Random.Range(0, enemyTypes.Length);
         enemyToSpawn = enemyTypes[index];
-        Instantiate(enemyToSpawn, spawn.position, Quaternion.identity);
+        index = Random.Range(0, gameObject.transform.childCount);
+        spawn = children[index];
+        GameObject newEnemy = Instantiate(enemyToSpawn, spawn.position, Quaternion.identity);
+        newEnemy.GetComponentInChildren<Enemy>().target = Center;
     }
 }
