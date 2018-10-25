@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour {
     public float speed;
     public float damping;
     public Transform target;
+    Vector3 lookPos;
 
     private Rigidbody rb;
 
@@ -16,14 +17,20 @@ public class Enemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        var lookPos = target.position - transform.position;
-        lookPos.y = 0;
-        var rotation = Quaternion.LookRotation(lookPos);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * damping * 0.1f);
+        lookPos = target.position - transform.position;
+        lookPos.y = 0; 
     }
 
     void FixedUpdate()
     {
-        rb.AddForce(transform.forward * speed);
+        rb.AddForce(lookPos.normalized * speed);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.name == "Ring")
+        {
+            Destroy(gameObject.transform.parent.gameObject);
+        }
     }
 }
