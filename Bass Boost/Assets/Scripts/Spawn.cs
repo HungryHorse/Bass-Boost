@@ -6,6 +6,9 @@ public class Spawn : MonoBehaviour {
 
     public GameObject[] enemyTypes;
     public Transform Center;
+    public float spawnTime;
+
+    private float spawnCooldown = 0;
     private GameObject enemyToSpawn;
     private Transform spawn;
     private Transform[] children;
@@ -18,11 +21,20 @@ public class Spawn : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (Input.GetButtonDown("Fire1"))
+        //if (Input.GetButtonDown("Fire1"))
+        //{
+        //    SpawnEnemy();
+        //}
+		
+        if(spawnCooldown < 0)
         {
             SpawnEnemy();
+            spawnCooldown = spawnTime;
         }
-		
+        else
+        {
+            spawnCooldown -= Time.deltaTime;
+        }
 	}
 
     private void SpawnEnemy()
