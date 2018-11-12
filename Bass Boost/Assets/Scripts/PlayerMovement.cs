@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour {
     public float chargeRate;
     public float minCharge;
     public float cooldown;
+    public bool onBeat;
 
     public Slider boostMeter;
 
@@ -29,6 +30,13 @@ public class PlayerMovement : MonoBehaviour {
 
     void Update()
     {
+
+        if (delayLeft > 0)
+        {
+            delayLeft -= Time.deltaTime;
+            charge = 0;
+        }
+
         facing = Vector3.zero;
         facing.x = Input.GetAxis("Horizontal");
         facing.z = Input.GetAxis("Vertical");
@@ -46,16 +54,15 @@ public class PlayerMovement : MonoBehaviour {
             }
         }
 
+
         if (Input.GetButtonUp("Jump") && delayLeft <= 0)
         {
             boost = true;
             delayLeft = cooldown;
-        }
-
-        if (delayLeft > 0)
-        {
-            delayLeft -= Time.deltaTime;
-            charge = 0;
+            if (onBeat)
+            {
+                charge *= 2;
+            }
         }
 
         boostMeter.value = charge;
@@ -68,6 +75,7 @@ public class PlayerMovement : MonoBehaviour {
         if (boost == true)
         {
             Debug.Log("Boost = true");
+            Debug.Log(charge);
             if (charge <= 2)
             {
                 player.AddForce(facing.normalized * charge/2 * 500);
