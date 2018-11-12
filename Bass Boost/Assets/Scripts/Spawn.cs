@@ -41,7 +41,7 @@ public class Spawn : MonoBehaviour {
     {
         int index = Random.Range(0, enemyTypes.Length);
         enemyToSpawn = enemyTypes[index];
-        index = Random.Range(0, gameObject.transform.childCount);
+        index = Random.Range(1, gameObject.transform.childCount);
         spawn = children[index];
         GameObject newEnemy = Instantiate(enemyToSpawn, spawn.position, Quaternion.identity);
         newEnemy.GetComponentInChildren<Enemy>().target = Center;

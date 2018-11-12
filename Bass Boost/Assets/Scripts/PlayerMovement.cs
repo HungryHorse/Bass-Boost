@@ -7,11 +7,13 @@ public class PlayerMovement : MonoBehaviour {
 
     public float Speed;
     public float maxCharge;
-    public float chargeRate ;
+    public float chargeRate;
     public float minCharge;
+    public float cooldown;
 
     public Slider boostMeter;
 
+    private float delayLeft;
     private bool boost = false;
     private float charge;
     private Rigidbody player;
@@ -27,7 +29,6 @@ public class PlayerMovement : MonoBehaviour {
 
     void Update()
     {
-        
         facing = Vector3.zero;
         facing.x = Input.GetAxis("Horizontal");
         facing.z = Input.GetAxis("Vertical");
@@ -36,7 +37,7 @@ public class PlayerMovement : MonoBehaviour {
             facing = new Vector3(facing.x, 0, facing.z);
         }
         
-        if (Input.GetButton("Jump"))
+        if (Input.GetButton("Jump") && delayLeft <= 0)
         {
             facing /= 3;
             if(charge <= maxCharge)
@@ -45,9 +46,16 @@ public class PlayerMovement : MonoBehaviour {
             }
         }
 
-        if (Input.GetButtonUp("Jump"))
+        if (Input.GetButtonUp("Jump") && delayLeft <= 0)
         {
             boost = true;
+            delayLeft = cooldown;
+        }
+
+        if (delayLeft > 0)
+        {
+            delayLeft -= Time.deltaTime;
+            charge = 0;
         }
 
         boostMeter.value = charge;
@@ -59,9 +67,23 @@ public class PlayerMovement : MonoBehaviour {
         
         if (boost == true)
         {
-            player.AddForce(facing.normalized * charge * 500);
-            
-            charge = minCharge;
+            Debug.Log("Boost = true");
+            if (charge <= 2)
+            {
+                player.AddForce(facing.normalized * charge/2 * 500);
+
+                charge = minCharge;
+
+                Debug.Log("Charge is less than 2");
+            }
+            else
+            {
+                player.AddForce(facing.normalized * charge * 500);
+
+                charge = minCharge;
+
+                Debug.Log("Charge is more than 2");
+            }
             boost = false;
         }
         else

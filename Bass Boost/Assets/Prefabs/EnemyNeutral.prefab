@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 4494635506690366}
-  smoothing: 10
+  smoothing: 100
   x: 0
   y: 0.5
   z: 0
@@ -190,6 +190,7 @@ MonoBehaviour:
   speed: 5
   damping: 10
   target: {fileID: 0}
+  points: 5
 --- !u!135 &135510132928098620
 SphereCollider:
   m_ObjectHideFlags: 1

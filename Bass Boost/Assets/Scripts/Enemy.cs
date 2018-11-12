@@ -7,11 +7,14 @@ public class Enemy : MonoBehaviour {
     public float damping;
     public Transform target;
     Vector3 lookPos;
+    public int points;
 
+    private Score score;
     private Rigidbody rb;
 
 	// Use this for initialization
 	void Start () {
+        score = GameObject.Find("ScoreManager").GetComponent<Score>();
         rb = gameObject.GetComponent<Rigidbody>();
 	}
 	
@@ -31,6 +34,7 @@ public class Enemy : MonoBehaviour {
         if (collision.gameObject.name == "Ring")
         {
             Destroy(gameObject.transform.parent.gameObject);
+            score.AddScore(points);
         }
     }
 }
