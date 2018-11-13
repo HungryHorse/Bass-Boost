@@ -21,7 +21,7 @@ public class AudioFFT : MonoBehaviour {
     {
         audioSource.GetSpectrumData(samples, 0, FFTWindow.Blackman);
         CreateBands();
-        if(freqBands[0] > 1f)
+        if(freqBands[0] > 1f || freqBands[1] > 1f)
         {
             move.onBeat = true;
         }
