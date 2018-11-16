@@ -6,14 +6,17 @@ using UnityEngine;
 public class AudioFFT : MonoBehaviour {
 
     public PlayerMovement move;
+    public Light pointRed;
+    public Light pointGreen;
+    public Light pointBlue;
     AudioSource audioSource;
     private float[] samples = new float[512];
-    public float[] freqBands = new float[8]; 
+    public float[] freqBands = new float[8];
+    private float bassAverage;
 
 	// Use this for initialization
 	void Start () {
         audioSource = gameObject.GetComponent<AudioSource>();
-
 	}
 	
 	// Update is called once per frame
@@ -21,7 +24,16 @@ public class AudioFFT : MonoBehaviour {
     {
         audioSource.GetSpectrumData(samples, 0, FFTWindow.Blackman);
         CreateBands();
-        if(freqBands[0] > 1f || freqBands[1] > 1f)
+
+        float average = 0;
+        for(int i = 2; i < 7; i++)
+        {
+            average += freqBands[i];
+        }
+        average /= 6;
+
+        bassAverage = ((freqBands[0] + freqBands[1]) / 2);
+        if(bassAverage > average)
         {
             move.onBeat = true;
         }
@@ -29,6 +41,10 @@ public class AudioFFT : MonoBehaviour {
         {
             move.onBeat = false;
         }
+
+        pointBlue.intensity = Mathf.Clamp(bassAverage / 10, 1, 2.5f);
+        pointRed.intensity =  Mathf.Clamp(((freqBands[2] + freqBands[3] + freqBands[4]) / 3) / 10, 1, 2.5f);
+        pointGreen.intensity = Mathf.Clamp(((freqBands[5] + freqBands[6] + freqBands[7]) / 3 ) / 10, 1, 2.5f);
     }
 
     void CreateBands()
@@ -53,7 +69,7 @@ public class AudioFFT : MonoBehaviour {
 
             average /= count;
 
-            freqBands[i] = average * 100;
+            freqBands[i] = average * 1000;
         }
 
     }

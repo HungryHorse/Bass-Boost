@@ -20,12 +20,13 @@ public class PlayerMovement : MonoBehaviour {
     private Rigidbody player;
     private Vector3 facing;
     private Vector3 DashForce;
-
+    private Camera cameraMain;
 
     void Start()
     {
         player = GetComponent<Rigidbody>();
         charge = minCharge;
+        cameraMain = Camera.main;
     }
 
     void Update()
@@ -63,22 +64,12 @@ public class PlayerMovement : MonoBehaviour {
             {
                 charge *= 2;
             }
-        }
-
-        boostMeter.value = charge;
-    }
-
-
-    void FixedUpdate()
-    {
-        
-        if (boost == true)
-        {
+            
             Debug.Log("Boost = true");
             Debug.Log(charge);
             if (charge <= 2)
             {
-                player.AddForce(facing.normalized * charge/2 * 500);
+                player.AddForce(facing.normalized * charge / 2 * 500);
 
                 charge = minCharge;
 
@@ -94,9 +85,24 @@ public class PlayerMovement : MonoBehaviour {
             }
             boost = false;
         }
+
+
+        boostMeter.value = charge;
+
+        if (onBeat)
+        {
+            cameraMain.fieldOfView = Mathf.Lerp(60f, 63f, Time.deltaTime * 0.00001f);
+        }
         else
         {
-            player.AddForce(facing * Speed);
+            cameraMain.fieldOfView = Mathf.Lerp(63f, 60f, Time.deltaTime * 0.00001f);
         }
+    }
+
+
+    void FixedUpdate()
+    {
+
+        player.AddForce(facing * Speed);
     }
 }
