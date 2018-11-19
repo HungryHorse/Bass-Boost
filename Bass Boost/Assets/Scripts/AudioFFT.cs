@@ -44,7 +44,7 @@ public class AudioFFT : MonoBehaviour {
 
         pointBlue.intensity = Mathf.Clamp(bassAverage / 10, 1, 2.5f);
         pointRed.intensity =  Mathf.Clamp(((freqBands[2] + freqBands[3] + freqBands[4]) / 3) / 10, 1, 2.5f);
-        pointGreen.intensity = Mathf.Clamp(((freqBands[5] + freqBands[6] + freqBands[7]) / 3 ) / 10, 1, 2.5f);
+        pointGreen.intensity = Mathf.Clamp(((freqBands[5] + freqBands[6] + freqBands[7]) / 3) / 10, 1, 2.5f);
     }
 
     void CreateBands()

@@ -6,15 +6,21 @@ using UnityEngine.UI;
 public class Score : MonoBehaviour {
 
     private int score;
-    public Text text;
+    public Text scoreText;
+    public Text musicTimeLeft;
+    public AudioSource music;
+
+    private float musicLength;
 	// Use this for initialization
 	void Start () {
         score = 0;
+        musicLength = music.clip.length / 60;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        text.text = ("Score: " + score);
+        scoreText.text = ("Score: " + score);
+        musicTimeLeft.text = ("Time: " + musicLength);
 	}
 
     public void AddScore(int scoreToAdd)

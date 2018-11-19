@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour {
 
+    public GameObject body;
     public float Speed;
     public float maxCharge;
     public float chargeRate;
@@ -86,17 +87,16 @@ public class PlayerMovement : MonoBehaviour {
             boost = false;
         }
 
-
-        boostMeter.value = charge;
-
         if (onBeat)
         {
-            cameraMain.fieldOfView = Mathf.Lerp(60f, 63f, Time.deltaTime * 0.00001f);
+            body.transform.localScale = new Vector3(1.2f, 1.2f, 1);
         }
         else
         {
-            cameraMain.fieldOfView = Mathf.Lerp(63f, 60f, Time.deltaTime * 0.00001f);
+            body.transform.localScale = new Vector3(1, 1, 1);
         }
+
+        boostMeter.value = charge;
     }
 
 
