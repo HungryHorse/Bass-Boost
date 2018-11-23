@@ -12,6 +12,9 @@ public class PlayerMovement : MonoBehaviour {
     public float minCharge;
     public float cooldown;
     public bool onBeat;
+    public Light blue;
+    public Light green;
+    public Light red;
 
     public Slider boostMeter;
 
@@ -32,6 +35,13 @@ public class PlayerMovement : MonoBehaviour {
 
     void Update()
     {
+
+        if(red.color != Color.red)
+        {
+            red.color = Color.red;
+            blue.color = Color.blue;
+            green.color = Color.green;
+        }
 
         if (delayLeft > 0)
         {
@@ -56,6 +66,14 @@ public class PlayerMovement : MonoBehaviour {
             }
         }
 
+        if (onBeat)
+        {
+            body.transform.localScale = new Vector3(1.2f, 1.2f, 1);
+        }
+        else
+        {
+            body.transform.localScale = new Vector3(1, 1, 1);
+        }
 
         if (Input.GetButtonUp("Jump") && delayLeft <= 0)
         {
@@ -64,6 +82,9 @@ public class PlayerMovement : MonoBehaviour {
             if (onBeat)
             {
                 charge *= 2;
+                red.color = Color.yellow;
+                blue.color = Color.yellow;
+                green.color = Color.yellow;
             }
             
             Debug.Log("Boost = true");
@@ -86,23 +107,13 @@ public class PlayerMovement : MonoBehaviour {
             }
             boost = false;
         }
-
-        if (onBeat)
-        {
-            body.transform.localScale = new Vector3(1.2f, 1.2f, 1);
-        }
-        else
-        {
-            body.transform.localScale = new Vector3(1, 1, 1);
-        }
-
+        
         boostMeter.value = charge;
     }
 
 
     void FixedUpdate()
     {
-
         player.AddForce(facing * Speed);
     }
 }
