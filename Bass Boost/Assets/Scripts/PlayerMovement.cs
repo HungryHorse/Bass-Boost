@@ -15,9 +15,11 @@ public class PlayerMovement : MonoBehaviour {
     public Light blue;
     public Light green;
     public Light red;
+    public Shader boostShader;
 
     public Slider boostMeter;
 
+    private float frameCount;
     private float delayLeft;
     private bool boost = false;
     private float charge;
@@ -36,11 +38,15 @@ public class PlayerMovement : MonoBehaviour {
     void Update()
     {
 
-        if(red.color != Color.red)
+        if(red.color != Color.red && frameCount <= 0)
         {
             red.color = Color.red;
             blue.color = Color.blue;
             green.color = Color.green;
+        }
+        else if(frameCount > 0)
+        {
+            frameCount -= Time.deltaTime;
         }
 
         if (delayLeft > 0)
@@ -83,8 +89,12 @@ public class PlayerMovement : MonoBehaviour {
             {
                 charge *= 2;
                 red.color = Color.yellow;
+                red.intensity = 2;
                 blue.color = Color.yellow;
+                blue.intensity = 2;
                 green.color = Color.yellow;
+                green.intensity = 2;
+                frameCount = 0.3f;
             }
             
             Debug.Log("Boost = true");

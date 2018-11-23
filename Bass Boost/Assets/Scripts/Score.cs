@@ -20,7 +20,8 @@ public class Score : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         scoreText.text = ("Score: " + score);
-        musicTimeLeft.text = ("Time: " + musicLength);
+        musicTimeLeft.text = ("Time: " + (Mathf.Round(musicLength * 100) / 100));
+        musicLength -= Time.deltaTime/60;
 	}
 
     public void AddScore(int scoreToAdd)
