@@ -20,6 +20,10 @@ public class Enemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (transform.position.y <= -0.44)
+        {
+            rb.constraints = RigidbodyConstraints.FreezePositionY;
+        }
         lookPos = target.position - transform.position;
         lookPos.y = 0; 
     }
