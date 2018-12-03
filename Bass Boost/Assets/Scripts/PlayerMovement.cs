@@ -11,7 +11,9 @@ public class PlayerMovement : MonoBehaviour {
     public float chargeRate;
     public float minCharge;
     public float cooldown;
+    public float boostPad;
     public bool onBeat;
+    public bool framePaddedBoost;
     public Light blue;
     public Light green;
     public Light red;
@@ -19,6 +21,7 @@ public class PlayerMovement : MonoBehaviour {
 
     public Slider boostMeter;
 
+    private float boostPadding;
     private float frameCount;
     private float delayLeft;
     private bool boost = false;
@@ -37,6 +40,11 @@ public class PlayerMovement : MonoBehaviour {
 
     void Update()
     {
+        if (onBeat)
+        {
+            framePaddedBoost = true;
+            boostPadding = boostPad;
+        }
 
         if(red.color != Color.red && frameCount <= 0)
         {
@@ -48,6 +56,16 @@ public class PlayerMovement : MonoBehaviour {
         {
             frameCount -= Time.deltaTime;
         }
+
+        if(boostPadding > 0)
+        {
+            boostPadding -= Time.deltaTime;
+        }
+        else if(boostPadding <= 0)
+        {
+            framePaddedBoost = false;
+        }
+
 
         if (delayLeft > 0)
         {
@@ -72,7 +90,7 @@ public class PlayerMovement : MonoBehaviour {
             }
         }
 
-        if (onBeat)
+        if (framePaddedBoost)
         {
             body.transform.localScale = new Vector3(1.2f, 1.2f, 1);
         }
@@ -85,7 +103,7 @@ public class PlayerMovement : MonoBehaviour {
         {
             boost = true;
             delayLeft = cooldown;
-            if (onBeat)
+            if (framePaddedBoost)
             {
                 charge *= 2;
                 red.color = Color.yellow;

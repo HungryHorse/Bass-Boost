@@ -1086,7 +1086,9 @@ MonoBehaviour:
   chargeRate: 2
   minCharge: 1
   cooldown: 0.3
+  boostPad: 0.1
   onBeat: 0
+  framePaddedBoost: 0
   blue: {fileID: 631755356}
   green: {fileID: 1073449510}
   red: {fileID: 950286344}
