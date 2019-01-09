@@ -18,6 +18,8 @@ public class PlayerMovement : MonoBehaviour {
     public Light green;
     public Light red;
     public Shader boostShader;
+    public CameraShake cameraShake;
+    public AudioSource boostSound;
 
     public Slider boostMeter;
 
@@ -102,6 +104,7 @@ public class PlayerMovement : MonoBehaviour {
         if (Input.GetButtonUp("Jump") && delayLeft <= 0)
         {
             boost = true;
+            boostSound.Play();
             delayLeft = cooldown;
             if (framePaddedBoost)
             {
@@ -115,23 +118,17 @@ public class PlayerMovement : MonoBehaviour {
                 frameCount = 0.3f;
             }
             
-            Debug.Log("Boost = true");
-            Debug.Log(charge);
             if (charge <= 2)
             {
                 player.AddForce(facing.normalized * charge / 2 * 500);
 
                 charge = minCharge;
-
-                Debug.Log("Charge is less than 2");
             }
             else
             {
                 player.AddForce(facing.normalized * charge * 500);
 
                 charge = minCharge;
-
-                Debug.Log("Charge is more than 2");
             }
             boost = false;
         }
@@ -143,5 +140,13 @@ public class PlayerMovement : MonoBehaviour {
     void FixedUpdate()
     {
         player.AddForce(facing * Speed);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag != "Floor")
+        {
+            StartCoroutine(cameraShake.Shake(0.3f, player.velocity.magnitude/10));
+        }
     }
 }

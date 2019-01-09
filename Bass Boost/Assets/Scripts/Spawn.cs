@@ -5,6 +5,7 @@ using UnityEngine;
 public class Spawn : MonoBehaviour {
 
     public GameObject[] enemyTypes;
+    public Transform[] targets;
     public Transform Center;
     public float spawnTime;
 
@@ -40,10 +41,12 @@ public class Spawn : MonoBehaviour {
     private void SpawnEnemy()
     {
         int index = Random.Range(0, enemyTypes.Length);
+        int targetIndex = Random.Range(0, targets.Length);
         enemyToSpawn = enemyTypes[index];
         index = Random.Range(1, gameObject.transform.childCount);
         spawn = children[index];
         GameObject newEnemy = Instantiate(enemyToSpawn, spawn.position, Quaternion.identity);
-        newEnemy.GetComponentInChildren<Enemy>().target = Center;
+        newEnemy.GetComponentInChildren<Enemy>().targets = targets;
+        newEnemy.GetComponentInChildren<Enemy>().targetIndex = targetIndex;
     }
 }

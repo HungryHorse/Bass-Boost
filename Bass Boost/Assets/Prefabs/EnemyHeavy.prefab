@@ -154,7 +154,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1.5
   m_Drag: 0.2
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0.1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 2
@@ -187,9 +187,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df3dd6dd2f09f8e4ea1fca5887803b9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 3
   damping: 10
-  target: {fileID: 0}
+  targets: []
+  targetIndex: 0
   points: 5
 --- !u!135 &135441346137469408
 SphereCollider:

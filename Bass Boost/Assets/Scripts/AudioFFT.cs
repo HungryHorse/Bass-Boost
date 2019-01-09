@@ -9,6 +9,8 @@ public class AudioFFT : MonoBehaviour {
     public Light pointRed;
     public Light pointGreen;
     public Light pointBlue;
+    public int audioClipToPlay;
+    public AudioClip[] audioClips;
     AudioSource audioSource;
     private float[] samples = new float[512];
     public float[] freqBands = new float[8];
@@ -17,6 +19,8 @@ public class AudioFFT : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         audioSource = gameObject.GetComponent<AudioSource>();
+        audioSource.clip = audioClips[PlayerPrefs.GetInt("SongPicked")];
+        audioSource.Play();
 	}
 	
 	// Update is called once per frame

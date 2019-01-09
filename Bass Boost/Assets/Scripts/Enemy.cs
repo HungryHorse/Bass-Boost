@@ -5,7 +5,8 @@ using UnityEngine;
 public class Enemy : MonoBehaviour {
     public float speed;
     public float damping;
-    public Transform target;
+    public Transform[] targets;
+    public int targetIndex;
     Vector3 lookPos;
     public int points;
 
@@ -24,8 +25,21 @@ public class Enemy : MonoBehaviour {
         {
             rb.constraints = RigidbodyConstraints.FreezePositionY;
         }
-        lookPos = target.position - transform.position;
-        lookPos.y = 0; 
+        lookPos = targets[targetIndex].position - transform.position;
+        lookPos.y = 0;
+
+        if (Vector3.Distance(gameObject.GetComponentInParent<Transform>().position, targets[targetIndex].position) <= 1f)
+        {
+            Debug.Log("Close");
+            if (targetIndex == targets.Length-1)
+            {
+                targetIndex = 0;
+            }
+            else
+            {
+                targetIndex++;
+            }
+        }
     }
 
     void FixedUpdate()
