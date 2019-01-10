@@ -45,18 +45,23 @@ public class PlayerMovement : MonoBehaviour {
     {
         currSpeed = Speed;
 
+        // set to true in FFT script
         if (onBeat)
         {
             framePaddedBoost = true;
+            // used so that players have more than one frame to get a perfect boost
             boostPadding = boostPad;
         }
 
+        // set lights back to normal after certain amount of time
         if(red.color != Color.red && frameCount <= 0)
         {
             red.color = Color.red;
             blue.color = Color.blue;
             green.color = Color.green;
         }
+
+
         else if(frameCount > 0)
         {
             frameCount -= Time.deltaTime;
@@ -66,6 +71,8 @@ public class PlayerMovement : MonoBehaviour {
         {
             boostPadding -= Time.deltaTime;
         }
+
+        //timing for if the player should have a perfect boost
         else if(boostPadding <= 0)
         {
             framePaddedBoost = false;
@@ -78,6 +85,7 @@ public class PlayerMovement : MonoBehaviour {
             charge = 0;
         }
 
+        //Get direction player wants to head and magintude from 0-1
         facing = Vector3.zero;
         facing.x = Input.GetAxis("Horizontal");
         facing.z = Input.GetAxis("Vertical");
@@ -87,6 +95,7 @@ public class PlayerMovement : MonoBehaviour {
         //    facing = new Vector3(facing.x, 0, facing.z);
         //}
         
+        //Charging, slows player and adds charge
         if (Input.GetButton("Jump") && delayLeft <= 0)
         {
             currSpeed /= 3;
@@ -96,6 +105,7 @@ public class PlayerMovement : MonoBehaviour {
             }
         }
 
+        //Makes player larger if they are at the right timing
         if (framePaddedBoost)
         {
             body.transform.localScale = new Vector3(1.2f, 1.2f, 1);
@@ -105,11 +115,13 @@ public class PlayerMovement : MonoBehaviour {
             body.transform.localScale = new Vector3(1, 1, 1);
         }
 
+        // boost
         if (Input.GetButtonUp("Jump") && delayLeft <= 0)
         {
             boost = true;
             boostSound.Play();
             delayLeft = cooldown;
+            // if they get a bass boost
             if (framePaddedBoost)
             {
                 charge *= 2;
@@ -122,6 +134,7 @@ public class PlayerMovement : MonoBehaviour {
                 frameCount = 0.3f;
             }
             
+            // to help prevent spamming charge under 2 is halved
             if (charge <= 2)
             {
                 player.AddForce(facing.normalized * charge / 2 * 500);
@@ -148,6 +161,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)
     {
+        //screen shake on impact
         if (collision.gameObject.tag != "Floor")
         {
             StartCoroutine(cameraShake.Shake(0.3f, player.velocity.magnitude/10));

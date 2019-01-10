@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        // stops the enemies flying
         if (transform.position.y <= -0.44)
         {
             rb.constraints = RigidbodyConstraints.FreezePositionY;
@@ -28,6 +29,7 @@ public class Enemy : MonoBehaviour {
         lookPos = targets[targetIndex].position - transform.position;
         lookPos.y = 0;
 
+        //if enemy gets close enough to target, new target is calcualted
         if (Vector3.Distance(gameObject.GetComponentInParent<Transform>().position, targets[targetIndex].position) <= 1f)
         {
             Debug.Log("Close");
@@ -49,6 +51,7 @@ public class Enemy : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)
     {
+        // destroy enemy and add score if hit into the arena walls
         if (collision.gameObject.name == "Ring")
         {
             Destroy(gameObject.transform.parent.gameObject);
