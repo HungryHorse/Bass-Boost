@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour {
 
     public Slider boostMeter;
 
+    private float currSpeed;
     private float boostPadding;
     private float frameCount;
     private float delayLeft;
@@ -42,6 +43,8 @@ public class PlayerMovement : MonoBehaviour {
 
     void Update()
     {
+        currSpeed = Speed;
+
         if (onBeat)
         {
             framePaddedBoost = true;
@@ -78,14 +81,15 @@ public class PlayerMovement : MonoBehaviour {
         facing = Vector3.zero;
         facing.x = Input.GetAxis("Horizontal");
         facing.z = Input.GetAxis("Vertical");
-        if (facing != Vector3.zero)
-        {
-            facing = new Vector3(facing.x, 0, facing.z);
-        }
+
+        //if (facing != Vector3.zero)
+        //{
+        //    facing = new Vector3(facing.x, 0, facing.z);
+        //}
         
         if (Input.GetButton("Jump") && delayLeft <= 0)
         {
-            facing /= 3;
+            currSpeed /= 3;
             if(charge <= maxCharge)
             {
                 charge += Time.deltaTime * chargeRate;
@@ -139,7 +143,7 @@ public class PlayerMovement : MonoBehaviour {
 
     void FixedUpdate()
     {
-        player.AddForce(facing * Speed);
+        player.AddForce(facing * currSpeed);
     }
 
     private void OnCollisionEnter(Collision collision)
